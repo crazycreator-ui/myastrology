@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Astrology Report | Birth Chart Predictions</title>
+    <meta name="description" content="Free personalized astrology report with health, wealth, career predictions based on your birth date. Get detailed zodiac and planetary analysis.">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .form-container {
+            background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .result-container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+        input, select, button {
+            padding: 12px;
+            margin: 8px 0;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #ff6b6b;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+        }
+        .prediction-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #6b73ff;
+        }
+        .zodiac-info {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .zodiac-icon {
+            font-size: 50px;
+            margin-right: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .hidden-section {
+            display: none;
+        }
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: #6b73ff;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1 style="color:white;">Personal Astrology Report</h1>
+        <form id="astroForm">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="birthdate">Date of Birth:</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+            
+            <label for="gender">Gender (for personalized reading):</label>
+            <select id="gender" name="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+            
+            <button type="button" onclick="generateReport()">Generate My Astrology Report</button>
+        </form>
+    </div>
+    
+    <div id="result" class="result-container">
+        <h2>Hello, <span id="userName"></span>!</h2>
+        <p>Your personal astrology report for <span id="reportDate"></span>:</p>
+        
+        <div class="zodiac-info">
+            <div class="zodiac-icon" id="zodiacSymbol">♈</div>
+            <div>
+                <h3>Your Zodiac Profile</h3>
+                <p><strong>Sun Sign:</strong> <span id="sunSign"></span></p>
+                <p><strong>Rising Sign (Ascendant):</strong> <span id="risingSign"></span> <em>(approximation)</em></p>
+                <p><strong>Moon Sign:</strong> <span id="moonSign"></span> <em>(approximation)</em></p>
+                <p><strong>Element:</strong> <span id="element"></span></p>
+            </div>
+        </div>
+        
+        <h3>Your Personal Predictions</h3>
+        
+        <div class="prediction-card">
+            <h4>Health Outlook <span id="healthEmoji">🌿</span></h4>
+            <p id="healthPrediction"></p>
+            <button class="toggle-btn" onclick="toggleSection('healthDetails')">Show Detailed Health Analysis</button>
+            <div id="healthDetails" class="hidden-section">
+                <p><strong>Vulnerable Areas:</strong> <span id="healthWeakness"></span></p>
+                <p><strong>Recommended Practices:</strong> <span id="healthRecommendation"></span></p>
+                <p><strong>Best Healing Time:</strong> <span id="healthTime"></span></p>
+            </div>
+        </div>
+        
+        <div class="prediction-card">
+            <h4>Wealth & Finance <span id="wealthEmoji">💰</span></h4>
+            <p id="wealthPrediction"></p>
+            <button class="toggle-btn" onclick="toggleSection('wealthDetails')">Show Detailed Financial Analysis</button>
+            <div id="wealthDetails" class="hidden-section">
+                <p><strong>Lucky Investments:</strong> <span id="wealthInvestment"></span></p>
+                <p><strong>Financial Challenges:</strong> <span id="wealthChallenge"></span></p>
+                <p><strong>Best Money Period:</strong> <span id="wealthTime"></span></p>
+            </div>
+        </div>
+        
+        <div class="prediction-card">
+            <h4>Career & Success <span id="careerEmoji">💼</span></h4>
+            <p id="careerPrediction"></p>
+            <button class="toggle-btn" onclick="toggleSection('careerDetails')">Show Detailed Career Analysis</button>
+            <div id="careerDetails" class="hidden-section">
+                <p><strong>Ideal Professions:</strong> <span id="careerProfessions"></span></p>
+                <p><strong>Workplace Challenges:</strong> <span id="careerChallenges"></span></p>
+                <p><strong>Promotion Time:</strong> <span id="careerTime"></span></p>
+            </div>
+        </div>
+        
+        <div class="prediction-card">
+            <h4>Love & Relationships <span id="loveEmoji">💖</span></h4>
+            <p id="lovePrediction"></p>
+            <button class="toggle-btn" onclick="toggleSection('loveDetails')">Show Detailed Love Analysis</button>
+            <div id="loveDetails" class="hidden-section">
+                <p><strong>Compatible Signs:</strong> <span id="loveCompatible"></span></p>
+                <p><strong>Relationship Challenges:</strong> <span id="loveChallenges"></span></p>
+                <p><strong>Best Meeting Time:</strong> <span id="loveTime"></span></p>
+            </div>
+        </div>
+        
+        <h3>Planetary Influences</h3>
+        <div id="planetaryInfluences"></div>
+        
+        <h3>Personalized Advice</h3>
+        <div id="personalAdvice"></div>
+    </div>
+
+    <script>
+        function generateReport() {
+            const name = document.getElementById('name').value;
+            const birthdate = new Date(document.getElementById('birthdate').value);
+            const gender = document.getElementById('gender').value;
+            
+            if (!name || isNaN(birthdate.getTime())) {
+                alert("Please fill all fields correctly");
+                return;
+            }
+            
+            // Display basic info
+            document.getElementById('userName').textContent = name;
+            document.getElementById('reportDate').textContent = new Date().toLocaleDateString();
+            
+            // Calculate zodiac info
+            const zodiacInfo = getZodiacInfo(birthdate);
+            document.getElementById('sunSign').textContent = zodiacInfo.sign + " (" + zodiacInfo.dateRange + ")";
+            document.getElementById('risingSign').textContent = getRisingSign(birthdate);
+            document.getElementById('moonSign').textContent = getMoonSign(birthdate);
+            document.getElementById('element').textContent = zodiacInfo.element;
+            document.getElementById('zodiacSymbol').textContent = zodiacInfo.symbol;
+            
+            // Generate predictions
+            generatePredictions(name, zodiacInfo, gender);
+            
+            // Show result
+            document.getElementById('result').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function getZodiacInfo(date) {
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            
+            const zodiacs = [
+                { sign: "Aries", dateRange: "Mar 21 - Apr 19", element: "Fire", symbol: "♈", 
+                  traits: "courageous, determined, confident" },
+                { sign: "Taurus", dateRange: "Apr 20 - May 20", element: "Earth", symbol: "♉", 
+                  traits: "reliable, patient, practical" },
+                { sign: "Gemini", dateRange: "May 21 - Jun 20", element: "Air", symbol: "♊", 
+                  traits: "versatile, expressive, curious" },
+                { sign: "Cancer", dateRange: "Jun 21 - Jul 22", element: "Water", symbol: "♋", 
+                  traits: "intuitive, sentimental, compassionate" },
+                { sign: "Leo", dateRange: "Jul 23 - Aug 22", element: "Fire", symbol: "♌", 
+                  traits: "creative, passionate, generous" },
+                { sign: "Virgo", dateRange: "Aug 23 - Sep 22", element: "Earth", symbol: "♍", 
+                  traits: "loyal, analytical, kind" },
+                { sign: "Libra", dateRange: "Sep 23 - Oct 22", element: "Air", symbol: "♎", 
+                  traits: "diplomatic, gracious, fair-minded" },
+                { sign: "Scorpio", dateRange: "Oct 23 - Nov 21", element: "Water", symbol: "♏", 
+                  traits: "resourceful, brave, passionate" },
+                { sign: "Sagittarius", dateRange: "Nov 22 - Dec 21", element: "Fire", symbol: "♐", 
+                  traits: "generous, idealistic, humorous" },
+                { sign: "Capricorn", dateRange: "Dec 22 - Jan 19", element: "Earth", symbol: "♑", 
+                  traits: "responsible, disciplined, self-controlled" },
+                { sign: "Aquarius", dateRange: "Jan 20 - Feb 18", element: "Air", symbol: "♒", 
+                  traits: "progressive, original, humanitarian" },
+                { sign: "Pisces", dateRange: "Feb 19 - Mar 20", element: "Water", symbol: "♓", 
+                  traits: "compassionate, artistic, intuitive" }
+            ];
+            
+            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return zodiacs[0];
+            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return zodiacs[1];
+            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return zodiacs[2];
+            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return zodiacs[3];
+            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return zodiacs[4];
+            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return zodiacs[5];
+            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return zodiacs[6];
+            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return zodiacs[7];
+            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return zodiacs[8];
+            if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return zodiacs[9];
+            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return zodiacs[10];
+            return zodiacs[11];
+        }
+        
+        function getRisingSign(date) {
+            // Simplified rising sign calculation based on birth hour
+            const hours = date.getHours();
+            const signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", 
+                          "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+            return signs[hours % 12];
+        }
+        
+        function getMoonSign(date) {
+            // Simplified moon sign calculation (real one needs exact time and location)
+            const day = date.getDate();
+            const signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", 
+                          "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+            return signs[(day + date.getMonth()) % 12];
+        }
+        
+        function generatePredictions(name, zodiacInfo, gender) {
+            const pronouns = gender === 'female' ? ['She', 'her'] : 
+                           (gender === 'male' ? ['He', 'him'] : ['They', 'them']);
+            
+            // Health Prediction
+            const healthEmojis = ["🌿", "💪", "🏥", "🍎", "🧘", "🏋️"];
+            const healthOutcomes = [
+                `${name}'s ${zodiacInfo.element.toLowerCase()} energy makes ${pronouns[1].toLowerCase()} naturally ${['resilient', 'vulnerable', 'balanced'][Math.floor(Math.random()*3)]} health-wise.`,
+                `The planets indicate ${pronouns[1].toLowerCase()} should focus on ${['cardiovascular', 'respiratory', 'digestive', 'nervous'][Math.floor(Math.random()*4)]} health this year.`,
+                `With ${zodiacInfo.sign}'s influence, ${name} has natural ${['healing', 'recovery', 'vitality'][Math.floor(Math.random()*3)]} abilities.`
+            ];
+            document.getElementById('healthEmoji').textContent = healthEmojis[Math.floor(Math.random()*healthEmojis.length)];
+            document.getElementById('healthPrediction').textContent = healthOutcomes.join(' ');
+            document.getElementById('healthWeakness').textContent = ['joints', 'skin', 'head', 'stomach', 'back'][Math.floor(Math.random()*5)];
+            document.getElementById('healthRecommendation').textContent = `${['Yoga', 'Swimming', 'Running', 'Weight training'][Math.floor(Math.random()*4)]} and ${['meditation', 'proper sleep', 'balanced diet', 'regular checkups'][Math.floor(Math.random()*4)]}`;
+            document.getElementById('healthTime').textContent = `${['morning', 'evening', 'afternoon'][Math.floor(Math.random()*3)]} hours`;
+            
+            // Wealth Prediction
+            const wealthEmojis = ["💰", "💸", "💎", "🏦", "📈"];
+            const wealthOutcomes = [
+                `${zodiacInfo.sign}'s are known for their ${['financial wisdom', 'spending habits', 'investment luck'][Math.floor(Math.random()*3)]}.`,
+                `This year, ${name} may experience ${['unexpected gains', 'steady growth', 'financial challenges'][Math.floor(Math.random()*3)]} according to planetary alignment.`,
+                `${pronouns[0]} should consider ${['real estate', 'stocks', 'gold', 'business ventures'][Math.floor(Math.random()*4)]} for best returns.`
+            ];
+            document.getElementById('wealthEmoji').textContent = wealthEmojis[Math.floor(Math.random()*wealthEmojis.length)];
+            document.getElementById('wealthPrediction').textContent = wealthOutcomes.join(' ');
+            document.getElementById('wealthInvestment').textContent = ['technology', 'agriculture', 'energy', 'healthcare'][Math.floor(Math.random()*4)];
+            document.getElementById('wealthChallenge').textContent = ['overspending', 'impulse buys', 'missed opportunities'][Math.floor(Math.random()*3)];
+            document.getElementById('wealthTime').textContent = `${['Q2', 'Q3', 'last quarter'][Math.floor(Math.random()*3)]} of ${new Date().getFullYear()}`;
+            
+            // Career Prediction
+            const careerEmojis = ["💼", "🏆", "👔", "📊", "🚀"];
+            const careerOutcomes = [
+                `As a ${zodiacInfo.sign}, ${name} naturally excels in ${['leadership', 'creative', 'analytical'][Math.floor(Math.random()*3)]} roles.`,
+                `The stars suggest ${pronouns[1].toLowerCase()} will find success through ${['innovation', 'teamwork', 'independent work'][Math.floor(Math.random()*3)]}.`,
+                `This is ${['a good year', 'a challenging period', 'a transformative time'][Math.floor(Math.random()*3)]} for ${pronouns[1].toLowerCase()} professionally.`
+            ];
+            document.getElementById('careerEmoji').textContent = careerEmojis[Math.floor(Math.random()*careerEmojis.length)];
+            document.getElementById('careerPrediction').textContent = careerOutcomes.join(' ');
+            document.getElementById('careerProfessions').textContent = `${['Technology', 'Healthcare', 'Finance', 'Education'][Math.floor(Math.random()*4)]}, ${['Arts', 'Engineering', 'Marketing', 'Science'][Math.floor(Math.random()*4)]}`;
+            document.getElementById('careerChallenges').textContent = `${['work-life balance', 'office politics', 'skill gaps'][Math.floor(Math.random()*3)]}`;
+            document.getElementById('careerTime').textContent = `${['June', 'September', 'November'][Math.floor(Math.random()*3)]} ${new Date().getFullYear()}`;
+            
+            // Love Prediction
+            const loveEmojis = ["💖", "💘", "💑", "💔", "💕"];
+            const loveOutcomes = [
+                `In relationships, ${zodiacInfo.sign}'s are typically ${['passionate', 'loyal', 'independent'][Math.floor(Math.random()*3)]}.`,
+                `This year, ${name} may encounter ${['a deep connection', 'an old flame', 'new romantic opportunities'][Math.floor(Math.random()*3)]}.`,
+                `${pronouns[0]} should look for partners who ${['understand', 'challenge', 'support'][Math.floor(Math.random()*3)] ${pronouns[1].toLowerCase()}.`
+            ];
+            document.getElementById('loveEmoji').textContent = loveEmojis[Math.floor(Math.random()*loveEmojis.length)];
+            document.getElementById('lovePrediction').textContent = loveOutcomes.join(' ');
+            document.getElementById('loveCompatible').textContent = `${['Libra', 'Leo', 'Sagittarius', 'Aquarius'][Math.floor(Math.random()*4)]} and ${['Taurus', 'Cancer', 'Scorpio', 'Pisces'][Math.floor(Math.random()*4)]}`;
+            document.getElementById('loveChallenges').textContent = `${['communication', 'trust issues', 'different priorities'][Math.floor(Math.random()*3)]}`;
+            document.getElementById('loveTime').textContent = `${['spring', 'summer', 'autumn', 'winter'][Math.floor(Math.random()*4)]} ${new Date().getFullYear()}`;
+            
+            // Planetary Influences
+            const planets = ["Jupiter", "Venus", "Mars", "Saturn", "Mercury", "Moon", "Sun"];
+            const influences = [];
+            for (let i = 0; i < 3; i++) {
+                const planet = planets[Math.floor(Math.random()*planets.length)];
+                const effect = [
+                    `is bringing ${['positive', 'challenging', 'transformative'][Math.floor(Math.random()*3)]} energy to your ${['career', 'relationships', 'personal growth'][Math.floor(Math.random()*3)]} sector.`,
+                    `is influencing your ${['communication', 'finances', 'health'][Math.floor(Math.random()*3)]} in ${['powerful', 'subtle', 'noticeable'][Math.floor(Math.random()*3)]} ways.`,
+                    `suggests ${['a time for action', 'period of reflection', 'moment of decision'][Math.floor(Math.random()*3)]} in your life.`
+                ];
+                influences.push(`<p><strong>${planet}</strong> ${effect[Math.floor(Math.random()*effect.length)]}</p>`);
+            }
+            document.getElementById('planetaryInfluences').innerHTML = influences.join('');
+            
+            // Personalized Advice
+            const advice = [
+                `<p>Your ${zodiacInfo.element} element suggests you should ${['ground yourself', 'express freely', 'go with the flow'][['Earth','Air','Water'].indexOf(zodiacInfo.element)]} this season.</p>`,
+                `<p>As a ${zodiacInfo.sign}, you're advised to ${['take bold action', 'be patient', 'trust your intuition'][Math.floor(Math.random()*3)]} regarding ${['an opportunity', 'a relationship', 'a financial decision'][Math.floor(Math.random()*3)]} coming soon.</p>`,
+                `<p>The alignment of planets recommends ${['starting new projects now', 'waiting until next month', 'focusing on personal matters'][Math.floor(Math.random()*3)]} for best results.</p>`
+            ];
+            document.getElementById('personalAdvice').innerHTML = advice.join('');
+        }
+        
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section.style.display === 'none' || !section.style.display) {
+                section.style.display = 'block';
+                event.target.textContent = 'Hide Detailed Analysis';
+            } else {
+                section.style.display = 'none';
+                event.target.textContent = 'Show Detailed Analysis';
+            }
+        }
+    </script>
+</body>
+</html>
