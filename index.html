@@ -5,171 +5,387 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Astrology Report | Birth Chart Predictions</title>
     <meta name="description" content="Free personalized astrology report with health, wealth, career predictions based on your birth date. Get detailed zodiac and planetary analysis.">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        .form-container {
-            background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .result-container {
-            background-color: white;
-            padding: 25px;
-            border-radius: 10px;
-            margin-top: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            display: none;
-        }
-        input, select, button {
-            padding: 12px;
-            margin: 8px 0;
-            width: 100%;
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            border-radius: 5px;
-            border: 1px solid #ddd;
         }
-        button {
-            background-color: #ff6b6b;
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #fff;
+            padding: 20px;
+        }
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 30px 0;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
             color: white;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
-        button:hover {
-            background-color: #ff5252;
-            transform: translateY(-2px);
+        
+        h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 1px;
         }
-        .prediction-card {
-            background-color: #f8f9fa;
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 25px 0 15px;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin: 20px 0 10px;
+        }
+        
+        h4 {
+            font-size: 1.3rem;
+            margin: 15px 0 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        input, select {
+            width: 100%;
             padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #6b73ff;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
+        input:focus, select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        input::placeholder, select option:first-child {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover:before {
+            left: 100%;
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .result-container {
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .zodiac-info {
             display: flex;
             align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
             margin: 20px 0;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
         }
+        
         .zodiac-icon {
-            font-size: 50px;
-            margin-right: 20px;
+            font-size: 60px;
+            margin-right: 25px;
+            min-width: 60px;
+            text-align: center;
         }
-        h1, h2, h3 {
-            color: #2c3e50;
+        
+        .prediction-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+            border-left: 4px solid rgba(255, 255, 255, 0.3);
         }
+        
         .hidden-section {
             display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.2);
         }
+        
         .toggle-btn {
             background: none;
             border: none;
-            color: #6b73ff;
+            color: white;
+            font-family: 'Poppins', sans-serif;
             text-decoration: underline;
             cursor: pointer;
-            padding: 0;
+            padding: 5px 0;
             margin: 10px 0;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            transition: all 0.3s;
+        }
+        
+        .toggle-btn:hover {
+            opacity: 1;
+        }
+        
+        p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+        
+        .highlight {
+            font-weight: 700;
+            color: #ffcc00;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
+        }
+        
+        .icon {
+            margin-right: 10px;
+            opacity: 0.9;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .zodiac-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .zodiac-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            button, input, select {
+                padding: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1 style="color:white;">Personal Astrology Report</h1>
-        <form id="astroForm">
-            <label for="name">Your Name:</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="birthdate">Date of Birth:</label>
-            <input type="date" id="birthdate" name="birthdate" required>
-            
-            <label for="gender">Gender (for personalized reading):</label>
-            <select id="gender" name="gender">
+    <div class="container">
+        <h1><i class="fas fa-star icon"></i>Personal Astrology Report</h1>
+        
+        <div class="input-group">
+            <label for="name"><i class="fas fa-user icon"></i>Your Name</label>
+            <input type="text" id="name" placeholder="Enter your full name" required>
+        </div>
+        
+        <div class="input-group">
+            <label for="birthdate"><i class="fas fa-calendar-day icon"></i>Date of Birth</label>
+            <input type="date" id="birthdate" required>
+        </div>
+        
+        <div class="input-group">
+            <label for="gender"><i class="fas fa-venus-mars icon"></i>Gender (for personalized reading)</label>
+            <select id="gender">
+                <option value="">Select gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
             </select>
+        </div>
+        
+        <button onclick="generateReport()"><i class="fas fa-chart-line icon"></i>Generate My Astrology Report</button>
+        
+        <div id="result" class="result-container">
+            <h2>Hello, <span id="userName" class="highlight"></span>!</h2>
+            <p>Your personal astrology report for <span id="reportDate" class="highlight"></span>:</p>
             
-            <button type="button" onclick="generateReport()">Generate My Astrology Report</button>
-        </form>
-    </div>
-    
-    <div id="result" class="result-container">
-        <h2>Hello, <span id="userName"></span>!</h2>
-        <p>Your personal astrology report for <span id="reportDate"></span>:</p>
-        
-        <div class="zodiac-info">
-            <div class="zodiac-icon" id="zodiacSymbol">♈</div>
-            <div>
-                <h3>Your Zodiac Profile</h3>
-                <p><strong>Sun Sign:</strong> <span id="sunSign"></span></p>
-                <p><strong>Rising Sign (Ascendant):</strong> <span id="risingSign"></span> <em>(approximation)</em></p>
-                <p><strong>Moon Sign:</strong> <span id="moonSign"></span> <em>(approximation)</em></p>
-                <p><strong>Element:</strong> <span id="element"></span></p>
+            <div class="zodiac-info">
+                <div class="zodiac-icon" id="zodiacSymbol">♈</div>
+                <div>
+                    <h3>Your Zodiac Profile</h3>
+                    <p><strong>Sun Sign:</strong> <span id="sunSign" class="highlight"></span></p>
+                    <p><strong>Rising Sign (Ascendant):</strong> <span id="risingSign" class="highlight"></span> <em>(approximation)</em></p>
+                    <p><strong>Moon Sign:</strong> <span id="moonSign" class="highlight"></span> <em>(approximation)</em></p>
+                    <p><strong>Element:</strong> <span id="element" class="highlight"></span></p>
+                </div>
+            </div>
+            
+            <h3><i class="fas fa-crystal-ball icon"></i>Your Personal Predictions</h3>
+            
+            <div class="prediction-card">
+                <h4><span id="healthEmoji">🌿</span> Health Outlook</h4>
+                <p id="healthPrediction"></p>
+                <button class="toggle-btn" onclick="toggleSection('healthDetails')">Show Detailed Health Analysis</button>
+                <div id="healthDetails" class="hidden-section">
+                    <p><strong>Vulnerable Areas:</strong> <span id="healthWeakness" class="highlight"></span></p>
+                    <p><strong>Recommended Practices:</strong> <span id="healthRecommendation" class="highlight"></span></p>
+                    <p><strong>Best Healing Time:</strong> <span id="healthTime" class="highlight"></span></p>
+                </div>
+            </div>
+            
+            <div class="prediction-card">
+                <h4><span id="wealthEmoji">💰</span> Wealth & Finance</h4>
+                <p id="wealthPrediction"></p>
+                <button class="toggle-btn" onclick="toggleSection('wealthDetails')">Show Detailed Financial Analysis</button>
+                <div id="wealthDetails" class="hidden-section">
+                    <p><strong>Lucky Investments:</strong> <span id="wealthInvestment" class="highlight"></span></p>
+                    <p><strong>Financial Challenges:</strong> <span id="wealthChallenge" class="highlight"></span></p>
+                    <p><strong>Best Money Period:</strong> <span id="wealthTime" class="highlight"></span></p>
+                </div>
+            </div>
+            
+            <div class="prediction-card">
+                <h4><span id="careerEmoji">💼</span> Career & Success</h4>
+                <p id="careerPrediction"></p>
+                <button class="toggle-btn" onclick="toggleSection('careerDetails')">Show Detailed Career Analysis</button>
+                <div id="careerDetails" class="hidden-section">
+                    <p><strong>Ideal Professions:</strong> <span id="careerProfessions" class="highlight"></span></p>
+                    <p><strong>Workplace Challenges:</strong> <span id="careerChallenges" class="highlight"></span></p>
+                    <p><strong>Promotion Time:</strong> <span id="careerTime" class="highlight"></span></p>
+                </div>
+            </div>
+            
+            <div class="prediction-card">
+                <h4><span id="loveEmoji">💖</span> Love & Relationships</h4>
+                <p id="lovePrediction"></p>
+                <button class="toggle-btn" onclick="toggleSection('loveDetails')">Show Detailed Love Analysis</button>
+                <div id="loveDetails" class="hidden-section">
+                    <p><strong>Compatible Signs:</strong> <span id="loveCompatible" class="highlight"></span></p>
+                    <p><strong>Relationship Challenges:</strong> <span id="loveChallenges" class="highlight"></span></p>
+                    <p><strong>Best Meeting Time:</strong> <span id="loveTime" class="highlight"></span></p>
+                </div>
+            </div>
+            
+            <h3><i class="fas fa-planet-ringed icon"></i> Planetary Influences</h3>
+            <div id="planetaryInfluences" class="prediction-card"></div>
+            
+            <h3><i class="fas fa-hand-holding-heart icon"></i> Personalized Advice</h3>
+            <div id="personalAdvice" class="prediction-card"></div>
+            
+            <div class="footer">
+                <p>This astrology report is generated based on your birth details and current planetary positions</p>
             </div>
         </div>
-        
-        <h3>Your Personal Predictions</h3>
-        
-        <div class="prediction-card">
-            <h4>Health Outlook <span id="healthEmoji">🌿</span></h4>
-            <p id="healthPrediction"></p>
-            <button class="toggle-btn" onclick="toggleSection('healthDetails')">Show Detailed Health Analysis</button>
-            <div id="healthDetails" class="hidden-section">
-                <p><strong>Vulnerable Areas:</strong> <span id="healthWeakness"></span></p>
-                <p><strong>Recommended Practices:</strong> <span id="healthRecommendation"></span></p>
-                <p><strong>Best Healing Time:</strong> <span id="healthTime"></span></p>
-            </div>
-        </div>
-        
-        <div class="prediction-card">
-            <h4>Wealth & Finance <span id="wealthEmoji">💰</span></h4>
-            <p id="wealthPrediction"></p>
-            <button class="toggle-btn" onclick="toggleSection('wealthDetails')">Show Detailed Financial Analysis</button>
-            <div id="wealthDetails" class="hidden-section">
-                <p><strong>Lucky Investments:</strong> <span id="wealthInvestment"></span></p>
-                <p><strong>Financial Challenges:</strong> <span id="wealthChallenge"></span></p>
-                <p><strong>Best Money Period:</strong> <span id="wealthTime"></span></p>
-            </div>
-        </div>
-        
-        <div class="prediction-card">
-            <h4>Career & Success <span id="careerEmoji">💼</span></h4>
-            <p id="careerPrediction"></p>
-            <button class="toggle-btn" onclick="toggleSection('careerDetails')">Show Detailed Career Analysis</button>
-            <div id="careerDetails" class="hidden-section">
-                <p><strong>Ideal Professions:</strong> <span id="careerProfessions"></span></p>
-                <p><strong>Workplace Challenges:</strong> <span id="careerChallenges"></span></p>
-                <p><strong>Promotion Time:</strong> <span id="careerTime"></span></p>
-            </div>
-        </div>
-        
-        <div class="prediction-card">
-            <h4>Love & Relationships <span id="loveEmoji">💖</span></h4>
-            <p id="lovePrediction"></p>
-            <button class="toggle-btn" onclick="toggleSection('loveDetails')">Show Detailed Love Analysis</button>
-            <div id="loveDetails" class="hidden-section">
-                <p><strong>Compatible Signs:</strong> <span id="loveCompatible"></span></p>
-                <p><strong>Relationship Challenges:</strong> <span id="loveChallenges"></span></p>
-                <p><strong>Best Meeting Time:</strong> <span id="loveTime"></span></p>
-            </div>
-        </div>
-        
-        <h3>Planetary Influences</h3>
-        <div id="planetaryInfluences"></div>
-        
-        <h3>Personalized Advice</h3>
-        <div id="personalAdvice"></div>
     </div>
 
     <script>
@@ -178,14 +394,18 @@
             const birthdate = new Date(document.getElementById('birthdate').value);
             const gender = document.getElementById('gender').value;
             
-            if (!name || isNaN(birthdate.getTime())) {
+            if (!name || isNaN(birthdate.getTime()) || !gender) {
                 alert("Please fill all fields correctly");
                 return;
             }
             
             // Display basic info
             document.getElementById('userName').textContent = name;
-            document.getElementById('reportDate').textContent = new Date().toLocaleDateString();
+            document.getElementById('reportDate').textContent = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
             
             // Calculate zodiac info
             const zodiacInfo = getZodiacInfo(birthdate);
@@ -198,11 +418,10 @@
             // Generate predictions
             generatePredictions(name, zodiacInfo, gender);
             
-            // Show result
-            document.getElementById('result').style.display = 'block';
-            
-            // Scroll to results
-            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+            // Show result with animation
+            const result = document.getElementById('result');
+            result.style.display = 'block';
+            result.scrollIntoView({ behavior: 'smooth' });
         }
         
         function getZodiacInfo(date) {
@@ -314,7 +533,7 @@
             const loveOutcomes = [
                 `In relationships, ${zodiacInfo.sign}'s are typically ${['passionate', 'loyal', 'independent'][Math.floor(Math.random()*3)]}.`,
                 `This year, ${name} may encounter ${['a deep connection', 'an old flame', 'new romantic opportunities'][Math.floor(Math.random()*3)]}.`,
-                `${pronouns[0]} should look for partners who ${['understand', 'challenge', 'support'][Math.floor(Math.random()*3)] ${pronouns[1].toLowerCase()}.`
+                `${pronouns[0]} should look for partners who ${['understand', 'challenge', 'support'][Math.floor(Math.random()*3)]} ${pronouns[1].toLowerCase()}.`
             ];
             document.getElementById('loveEmoji').textContent = loveEmojis[Math.floor(Math.random()*loveEmojis.length)];
             document.getElementById('lovePrediction').textContent = loveOutcomes.join(' ');
@@ -347,12 +566,13 @@
         
         function toggleSection(sectionId) {
             const section = document.getElementById(sectionId);
+            const button = event.target;
             if (section.style.display === 'none' || !section.style.display) {
                 section.style.display = 'block';
-                event.target.textContent = 'Hide Detailed Analysis';
+                button.textContent = 'Hide Detailed Analysis';
             } else {
                 section.style.display = 'none';
-                event.target.textContent = 'Show Detailed Analysis';
+                button.textContent = 'Show Detailed Analysis';
             }
         }
     </script>
